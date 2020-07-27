@@ -1,0 +1,97 @@
+---
+title: "Palmer Penguins"
+author: "Sofi GS"
+date: "7/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidytuesdayR)
+library(tidyverse)
+library(ggridges)
+theme_set(theme_minimal())
+```
+
+## Load data
+
+
+```{r load}
+tt <- tidytuesdayR::tt_load(2020, week = 31)
+```
+
+## Readme
+
+```{r readme, eval=interactive()}
+tt
+```
+
+
+## Using the clean dataset
+
+```{r penguins}
+penguins <- tt$penguins
+```
+
+### Glimpse data
+
+```{r}
+glimpse(penguins)
+```
+
+### Inspect rows with NA
+
+```{r}
+penguins %>% 
+  filter(is.na(bill_length_mm))
+```
+
+
+## Remove rows with NA
+
+```{r}
+penguins <- penguins %>% 
+  filter(!is.na(bill_length_mm))
+```
+
+
+## Data exploration
+
+### Create scatterplott with penguin species as groups
+
+You can clearly cluster the penguin species based on their bill_depth and bill_length.
+
+```{r scatterplot}
+penguins %>% 
+  ggplot(aes(
+    x = bill_length_mm,
+    y = bill_depth_mm,
+    color = species
+    )) +
+  geom_point()
+
+```
+
+### Test ggridges
+
+```{r bill_length}
+penguins %>% 
+  ggplot(aes(
+    x = bill_length_mm,
+    y = species
+    )) +
+  geom_density_ridges()
+
+
+```
+
+```{r bill_depth}
+penguins %>% 
+  ggplot(aes(
+    x = bill_depth_mm,
+    y = species
+    )) +
+  geom_density_ridges()
+```
+
+#TODO patchwork and theme
