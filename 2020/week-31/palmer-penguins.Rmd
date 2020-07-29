@@ -2,7 +2,9 @@
 title: "Palmer Penguins"
 author: "Sofi GS"
 date: "7/26/2020"
-output: html_document
+output:
+  html_document:
+    keep_md: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -10,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidytuesdayR)
 library(tidyverse)
 library(ggridges)
+library(patchwork)
 theme_set(theme_minimal())
 ```
 
@@ -62,7 +65,7 @@ penguins <- penguins %>%
 You can clearly cluster the penguin species based on their bill_depth and bill_length.
 
 ```{r scatterplot}
-penguins %>% 
+p1 <- penguins %>% 
   ggplot(aes(
     x = bill_length_mm,
     y = bill_depth_mm,
@@ -70,28 +73,41 @@ penguins %>%
     )) +
   geom_point()
 
+print(p1)
+
 ```
 
 ### Test ggridges
 
 ```{r bill_length}
-penguins %>% 
+p2 <- penguins %>% 
   ggplot(aes(
     x = bill_length_mm,
-    y = species
+    y = species,
+    fill = species
     )) +
   geom_density_ridges()
+
+print(p2)
 
 
 ```
 
 ```{r bill_depth}
-penguins %>% 
+p3 <- penguins %>% 
   ggplot(aes(
     x = bill_depth_mm,
-    y = species
+    y = species,
+    fill = species
     )) +
   geom_density_ridges()
+
+print(p3)
 ```
 
 #TODO patchwork and theme
+
+```{r patchwork, echo=FALSE, fig.retina=3}
+p1 / (p2 | p3 )
+```
+
