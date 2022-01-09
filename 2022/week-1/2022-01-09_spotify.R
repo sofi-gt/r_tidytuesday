@@ -1,13 +1,13 @@
----
-title: "#TidyTuesday - Indie Pop Playlists"
-author: "Sofia Garcia Salas"
-date: "´r Sys.Date()´"
-output:
-  html_document:
-    keep_md: true
----
+#' ---
+#' title: "#TidyTuesday - Indie Pop Playlists"
+#' author: "Sofia Garcia Salas"
+#' date: "´r Sys.Date()´"
+#' output:
+#'   html_document:
+#'     keep_md: true
+#' ---
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+#+ echo=FALSE, message=FALSE, warning=FALSE
 library(spotifyr)
 library(dplyr)
 library(purrr)
@@ -15,12 +15,11 @@ library(tidyr)
 library(ggplot2)
 library(ggridges)
 library(patchwork)
-```
 
-Define the playlists I want to use
-#+ message=FALSE, warning=FALSE
 
-```{r }
+#' Define the playlists I want to use
+#' #+ message=FALSE, warning=FALSE
+
 playlists <- tribble(
   ~name, ~id,
   "indie pop", "37i9dQZF1DWWEcRhUVtL8n",
@@ -28,13 +27,11 @@ playlists <- tribble(
   "young and free", "37i9dQZF1DXca8AyWK6Y7g",
   "feel good indie rock", "37i9dQZF1DX2sUQwD7tbmL"
 )
-```
 
-Create a function to load the first 100 songs and their track features
-(the limit is given by the Spotify API and I don't want to complicate
-the code)
+#' Create a function to load the first 100 songs and their track features
+#' (the limit is given by the Spotify API and I don't want to complicate
+#' the code)
 
-```{r }
 get_playlist_track_features <- function(playlist_id, 
                                         playlist_fields = NULL, 
                                         features_fields = NULL,
@@ -59,24 +56,19 @@ get_playlist_track_features <- function(playlist_id,
     select(all_of(c(playlist_fields, features_fields)))
     
 }
-```
 
-Define the fields I want to get from get_playlist_tracks
+#' Define the fields I want to get from get_playlist_tracks
 
-```{r }
 playlist_fields <- c("added_at", "track.id", "track.name", 
                   "track.popularity", "track.album.album_type")
-```
 
-Define the fields I want to get from get_track_audio_features
+#' Define the fields I want to get from get_track_audio_features
 
-```{r }
 features_fields <- c("danceability", "energy", "valence", "tempo")
-```
 
-## Load data
 
-```{r }
+#' ## Load data
+
 playlist_track_features <- playlists %>% 
   mutate(
     features = map(id, ~get_playlist_track_features(
@@ -87,11 +79,10 @@ playlist_track_features <- playlists %>%
       ))
   ) %>% 
   unnest(features)
-```
 
-## Plot the data
 
-```{r }
+#' ## Plot the data
+
 p1 <- ggplot(playlist_track_features,
        aes(x = valence, y = name, fill = stat(x))) +
   geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
@@ -127,8 +118,7 @@ p4 <- ggplot(playlist_track_features,
 
 
 
-```
-```{r playlists, echo=FALSE}
+#+ playlists, echo=FALSE, fig.width=8
 p <- (p1 + p2) / (p3 + p4) + 
   plot_annotation(
     title = "track features comparison of my favorite Spotify created playlists",
@@ -139,8 +129,7 @@ p <- (p1 + p2) / (p3 + p4) +
 p
 
 
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+#+ echo=FALSE, message=FALSE, warning=FALSE
 ggsave(
   filename = here::here('2022', 'week-1', 'playlists.png'),
   plot = p,
@@ -148,5 +137,3 @@ ggsave(
   width = 10.5,
   height = 7
 ) 
-```
-

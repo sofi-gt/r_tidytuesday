@@ -139,6 +139,6 @@ p4 <- ggplot(playlist_track_features,
 ## Picking joint bandwidth of 8.75
 ```
 
-![](byod_files/figure-html/playlists-1.png)<!-- -->
+![](2022-01-09_spotify_files/figure-html/playlists-1.png)<!-- -->
 
 
