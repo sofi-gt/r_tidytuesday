@@ -118,7 +118,7 @@ p4 <- ggplot(playlist_track_features,
 
 
 
-#+ playlists, echo=FALSE
+#+ playlists, echo=FALSE, fig.width=5
 p <- (p1 + p2) / (p3 + p4) + 
   plot_annotation(
     title = "track features comparison of my favorite Spotify created playlists",
