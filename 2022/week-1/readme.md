@@ -1,7 +1,7 @@
 ---
 title: "#TidyTuesday - Indie Pop Playlists"
 author: "Sofia Garcia Salas"
-date: "´r Sys.Date()´"
+date: "2022-01-09"
 output:
   html_document:
     keep_md: true

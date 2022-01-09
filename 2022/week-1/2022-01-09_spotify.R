@@ -1,7 +1,7 @@
 #' ---
 #' title: "#TidyTuesday - Indie Pop Playlists"
 #' author: "Sofia Garcia Salas"
-#' date: "´r Sys.Date()´"
+#' date: "`r Sys.Date()`"
 #' output:
 #'   html_document:
 #'     keep_md: true
@@ -118,7 +118,7 @@ p4 <- ggplot(playlist_track_features,
 
 
 
-#+ playlists, echo=FALSE, fig.width=8
+#+ playlists, echo=FALSE, fig.width=10.5
 p <- (p1 + p2) / (p3 + p4) + 
   plot_annotation(
     title = "track features comparison of my favorite Spotify created playlists",
