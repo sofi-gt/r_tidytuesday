@@ -123,5 +123,22 @@ p4 <- ggplot(playlist_track_features,
   theme(axis.title = element_blank())
 ```
 
+```
+## Picking joint bandwidth of 0.0815
+```
+
+```
+## Picking joint bandwidth of 0.0425
+```
+
+```
+## Picking joint bandwidth of 0.0519
+```
+
+```
+## Picking joint bandwidth of 8.75
+```
+
+![](byod_files/figure-html/playlists-1.png)<!-- -->
 
 
