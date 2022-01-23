@@ -29,7 +29,6 @@ glimpse(stressor)
 
 #' ## Explore data
 #' colonies by year and months
-
 colony %>% 
   count(year, months)
 #' the data is grouped by trimester
@@ -49,72 +48,50 @@ stressor %>%
 colony %>% 
   filter(year == 2015) %>% 
   filter(state != "United States") %>% 
-  count(state, wt = colony_n, sort = TRUE) #11681750
+  count(state, wt = colony_n, sort = TRUE) 
 
 colony %>% 
   filter(year == 2015) %>% 
   filter(state != "United States") %>% 
   summarise(sum(colony_n))
 
-# United States
+#' ## Create plot for the United States
 
 us_colonies <- colony %>% 
   filter(state == "United States") %>% 
   group_by(year) %>% 
   summarise(
-    #colonies = mean(colony_n, na.rm = TRUE),
     colonies_lost = mean(colony_lost, na.rm = TRUE),
     colonies_added = mean(colony_added, na.rm = TRUE)
   ) %>% 
   pivot_longer(cols = c(
-    #colonies, 
     colonies_lost, 
     colonies_added))
 
 
-us_colonies_2 <- colony %>% 
-  filter(state == "United States") %>% 
-  separate(col = months, into = c("first_month", "last_month"), sep = "-") %>% 
-  mutate(date = lubridate::ym(paste(year, first_month))) %>% 
-  select(date, colony_added, colony_lost) %>% 
-  pivot_longer(cols = c(
-    #colonies, 
-    colony_lost, 
-    colony_added))
-
-
-colours_cafe <- c(
-  "medium_blue" = "#5c93c4", #make this yellow
-  "red" = "#a83e6c") #make this brown
-
-
-ggplot(us_colonies, aes(x = year, y = value, color = name, label = name)) +
+#+ playlists, echo=FALSE, fig.width=10.5
+p <- ggplot(us_colonies, aes(x = year, y = value, color = name, label = name)) +
   geom_textline(size = 8, fontface = 2, hjust = 0.3, vjust=0.3, linewidth = 0.8) +
-  scale_color_manual(values = c("#5c93c4", "#a83e6c")) +
+  scale_color_manual(values = c("#ffc125", "#5b2f13")) +
   labs(
     x = "year",
     y = "colonies",
-    title = "Average colonies added / lost per year"
-  )+
+    title = "Average colonies added / lost per year in the United States"
+  ) +
   theme(
     plot.title = element_text(hjust = 0.5, size = 20),
     legend.position = "none"
 )
-
-
-ggplot(us_colonies_2, aes(x = date, y = value, color = name, label = name)) +
-  geom_textpath(size = 6, fontface = 1.5, hjust = 0.3, vjust=0.3) 
-  
+p
 
 
 
-us_colonies_3 <- colony %>% 
-  filter(state == "United States") %>% 
-  separate(col = months, into = c("first_month", "last_month"), sep = "-") %>% 
-  mutate(date = lubridate::ym(paste(year, first_month))) %>% 
-  select(date, colony_added, colony_lost) 
+#+ echo=FALSE, message=FALSE, warning=FALSE
+ggsave(
+  filename = here::here('2022', 'week-2', 'bees.png'),
+  plot = p,
+  dpi = 300,
+  width = 10.5,
+  height = 7
+) 
 
-
-ggplot(us_colonies_3) +
-  geom_smooth(aes(x = date, y = colony_added)) +
-  geom_textsmooth(aes(x = date, y = colony_added), label = "added")
